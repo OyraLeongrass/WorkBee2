@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\apdu_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\b64_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\blob_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\dec_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\der_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\file_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\hex_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\json_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\mem_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\mt_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\obj_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\oid_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\prng_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\rng_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\str_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\tm_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\u16_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\u32_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\u64_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\core\util_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\bake_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\bash_bench.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\bash_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\bels_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\belt_bench.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\belt_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\bign_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\bign96_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\botp_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\bpki_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\brng_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\btok_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\dstu_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\g12s_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\pfok_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\crypto\stb99_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\math\ecp_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\math\ecp_bench.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\math\pp_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\math\pri_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\math\word_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\math\ww_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\math\zz_test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\test\test.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\DaraProgram\prog\_deps\bee2-src\test\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4F75AD1A-5127-32FB-910D-13A0D8734F06}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

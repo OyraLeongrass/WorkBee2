@@ -1,0 +1,15 @@
+D:/DaraProgram/prog/CMakeFiles/INSTALL.dir
+D:/DaraProgram/prog/CMakeFiles/ALL_BUILD.dir
+D:/DaraProgram/prog/CMakeFiles/ZERO_CHECK.dir
+D:/DaraProgram/prog/CMakeProject2/CMakeFiles/CMakeProject2.dir
+D:/DaraProgram/prog/CMakeProject2/CMakeFiles/INSTALL.dir
+D:/DaraProgram/prog/_deps/bee2-build/CMakeFiles/INSTALL.dir
+D:/DaraProgram/prog/_deps/bee2-build/CMakeFiles/ALL_BUILD.dir
+D:/DaraProgram/prog/_deps/bee2-build/include/CMakeFiles/INSTALL.dir
+D:/DaraProgram/prog/_deps/bee2-build/src/CMakeFiles/bee2_static.dir
+D:/DaraProgram/prog/_deps/bee2-build/src/CMakeFiles/bee2.dir
+D:/DaraProgram/prog/_deps/bee2-build/src/CMakeFiles/INSTALL.dir
+D:/DaraProgram/prog/_deps/bee2-build/cmd/CMakeFiles/bee2cmd.dir
+D:/DaraProgram/prog/_deps/bee2-build/cmd/CMakeFiles/INSTALL.dir
+D:/DaraProgram/prog/_deps/bee2-build/test/CMakeFiles/testbee2.dir
+D:/DaraProgram/prog/_deps/bee2-build/test/CMakeFiles/INSTALL.dir

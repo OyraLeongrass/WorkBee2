@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\affix\affix.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\bsum\bsum.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\core\cmd_arg.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\core\cmd_cvc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\core\cmd_date.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\core\cmd_file.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\core\cmd_print.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\core\cmd_privkey.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\core\cmd_pwd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\core\cmd_rng.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\core\cmd_sig.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\core\cmd_st.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\core\cmd_stamp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\core\cmd_sys.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\core\cmd_term.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\core\whereami.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\csr\csr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\cvc\cvc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\cvr\cvr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\es\es.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\fmt\fmt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\kg\kg.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\pwd\pwd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\sig\sig.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\stamp\stamp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\st\st.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\ver\ver.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\cmd_main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\DaraProgram\prog\_deps\bee2-src\cmd\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4F75AD1A-5127-32FB-910D-13A0D8734F06}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

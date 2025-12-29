@@ -1,0 +1,150 @@
+^D:\DARAPROGRAM\PROG\_DEPS\BEE2-SUBBUILD\CMAKEFILES\BABFC7EA41A1AD5B6F378F851E7EE16F\BEE2-POPULATE-MKDIR.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -Dcfgdir=/Debug -P D:/DaraProgram/prog/_deps/bee2-subbuild/bee2-populate-prefix/tmp/bee2-populate-mkdirs.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch D:/DaraProgram/prog/_deps/bee2-subbuild/bee2-populate-prefix/src/bee2-populate-stamp/Debug/bee2-populate-mkdir
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\DARAPROGRAM\PROG\_DEPS\BEE2-SUBBUILD\CMAKEFILES\BABFC7EA41A1AD5B6F378F851E7EE16F\BEE2-POPULATE-DOWNLOAD.RULE
+setlocal
+cd D:\DaraProgram\prog\_deps
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -P D:/DaraProgram/prog/_deps/bee2-subbuild/bee2-populate-prefix/tmp/bee2-populate-gitclone.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch D:/DaraProgram/prog/_deps/bee2-subbuild/bee2-populate-prefix/src/bee2-populate-stamp/Debug/bee2-populate-download
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\DARAPROGRAM\PROG\_DEPS\BEE2-SUBBUILD\CMAKEFILES\BABFC7EA41A1AD5B6F378F851E7EE16F\BEE2-POPULATE-UPDATE.RULE
+setlocal
+cd D:\DaraProgram\prog\_deps\bee2-src
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -Dcan_fetch=YES -P D:/DaraProgram/prog/_deps/bee2-subbuild/bee2-populate-prefix/tmp/bee2-populate-gitupdate.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\DARAPROGRAM\PROG\_DEPS\BEE2-SUBBUILD\CMAKEFILES\BABFC7EA41A1AD5B6F378F851E7EE16F\BEE2-POPULATE-PATCH.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch D:/DaraProgram/prog/_deps/bee2-subbuild/bee2-populate-prefix/src/bee2-populate-stamp/Debug/bee2-populate-patch
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\DARAPROGRAM\PROG\_DEPS\BEE2-SUBBUILD\CMAKEFILES\BABFC7EA41A1AD5B6F378F851E7EE16F\BEE2-POPULATE-CONFIGURE.RULE
+setlocal
+cd D:\DaraProgram\prog\_deps\bee2-build
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch D:/DaraProgram/prog/_deps/bee2-subbuild/bee2-populate-prefix/src/bee2-populate-stamp/Debug/bee2-populate-configure
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\DARAPROGRAM\PROG\_DEPS\BEE2-SUBBUILD\CMAKEFILES\BABFC7EA41A1AD5B6F378F851E7EE16F\BEE2-POPULATE-BUILD.RULE
+setlocal
+cd D:\DaraProgram\prog\_deps\bee2-build
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch D:/DaraProgram/prog/_deps/bee2-subbuild/bee2-populate-prefix/src/bee2-populate-stamp/Debug/bee2-populate-build
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\DARAPROGRAM\PROG\_DEPS\BEE2-SUBBUILD\CMAKEFILES\BABFC7EA41A1AD5B6F378F851E7EE16F\BEE2-POPULATE-INSTALL.RULE
+setlocal
+cd D:\DaraProgram\prog\_deps\bee2-build
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch D:/DaraProgram/prog/_deps/bee2-subbuild/bee2-populate-prefix/src/bee2-populate-stamp/Debug/bee2-populate-install
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\DARAPROGRAM\PROG\_DEPS\BEE2-SUBBUILD\CMAKEFILES\BABFC7EA41A1AD5B6F378F851E7EE16F\BEE2-POPULATE-TEST.RULE
+setlocal
+cd D:\DaraProgram\prog\_deps\bee2-build
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch D:/DaraProgram/prog/_deps/bee2-subbuild/bee2-populate-prefix/src/bee2-populate-stamp/Debug/bee2-populate-test
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\DARAPROGRAM\PROG\_DEPS\BEE2-SUBBUILD\CMAKEFILES\B25873C252C1C1333F38710516E88D74\BEE2-POPULATE-COMPLETE.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory D:/DaraProgram/prog/_deps/bee2-subbuild/CMakeFiles/Debug
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch D:/DaraProgram/prog/_deps/bee2-subbuild/CMakeFiles/Debug/bee2-populate-complete
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch D:/DaraProgram/prog/_deps/bee2-subbuild/bee2-populate-prefix/src/bee2-populate-stamp/Debug/bee2-populate-done
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\DARAPROGRAM\PROG\_DEPS\BEE2-SUBBUILD\CMAKEFILES\47522CBC4A4E54A240822AF18B340CE6\BEE2-POPULATE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\DARAPROGRAM\PROG\_DEPS\BEE2-SUBBUILD\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/DaraProgram/prog/_deps/bee2-subbuild -BD:/DaraProgram/prog/_deps/bee2-subbuild --check-stamp-file D:/DaraProgram/prog/_deps/bee2-subbuild/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
