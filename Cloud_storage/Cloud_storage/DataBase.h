@@ -1,4 +1,4 @@
-﻿  #pragma once
+﻿#pragma once
 #include <string>
 #include <vector>
 #include <memory>
@@ -10,23 +10,32 @@ using namespace std;
 
 struct Secret {
     int id;
-    string user;
-    string secret;
-    string password;
+    string owner_id;     // связь с пользователем
+    string secret;       // сам секрет
+    string created_at;   // дата создания
+    string expires_at;   // срок действия
+    string secret_type;  // тип секрета
 
     Secret() : id(0) {}
 
-    Secret(const string& uname, const string& sec, const string& pwd)
-        : id(0), user(uname), secret(sec), password(pwd) {
-    }
+    Secret(const string& oid, const string& sec,
+        const string& created, const string& expires,
+        const string& type)
+        : id(0), owner_id(oid), secret(sec),
+        created_at(created), expires_at(expires),
+        secret_type(type) {}
 
     void print() const {
         cout << "ID: " << id
-            << ", Пользователь: " << user
+            << ", Владелец: " << owner_id
             << ", Секрет: " << secret
-            << ", Пароль: " << password << endl;
+            << ", Дата создания: " << created_at
+            << ", Срок действия: " << expires_at
+            << ", Тип: " << secret_type << endl;
     }
 };
+
+
 
 class DatabaseException : public runtime_error {
 public:
@@ -61,7 +70,9 @@ public:
                 string(sqlite3_errmsg(db)));
         }
         executeSQL("PRAGMA foreign_keys = ON;");
-        createTables();
+        dropTables();
+        createTablesSecrets();
+        createTablesUsers();
         cout << "База данных открыта: " << path << endl;
         return true;
     }
@@ -76,106 +87,109 @@ public:
     }
 
     // Создание таблиц
-    void createTables() {
+    void createTablesSecrets() {
         string sql =
             "CREATE TABLE IF NOT EXISTS tbl_secret ("
             "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-            "user TEXT NOT NULL,"
+            "owner_id INTEGER NOT NULL,"
             "secret TEXT NOT NULL,"
-            "password TEXT NOT NULL"
+            "created_at TEXT NOT NULL,"
+            "expires_at TEXT NOT NULL,"
+            "secret_type TEXT NOT NULL"
             ");";
 
         executeSQL(sql);
-
-        // Создаем индекс для быстрого поиска по пользователю
-        executeSQL("CREATE INDEX IF NOT EXISTS idx_user ON tbl_secret(user);");
-
-        cout << "Таблица создана/проверена" << endl;
+        executeSQL("CREATE INDEX IF NOT EXISTS idx_created_at ON tbl_secret(created_at)");
+        cout << "Таблица секретов создана/проверена" << endl;
     }
-
+    void createTablesUsers() {
+        string sql = "CREATE TABLE IF NOT EXISTS tbl_users("
+            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            "username TEXT NOT NULL,"
+            "password TEXT NOT NULL,"
+            "role TEXT NOT NULL"
+            ");";
+        executeSQL(sql);
+        executeSQL("CREATE INDEX IF NOT EXISTS idx_user ON tbl_users(username);");
+        cout << "Таблица пользователя создана/проверена" << endl;
+    }
 
     // Добавление нового секрета
     int addSecret(const Secret& secret) {
         string sql =
-            "INSERT INTO tbl_secret (user, secret, password) "
-            "VALUES (?, ?, ?);";
+            "INSERT INTO tbl_secret (owner_id, secret, created_at, expires_at, secret_type) "
+            "VALUES (?, ?, ?, ?, ?);";
 
         sqlite3_stmt* stmt = nullptr;
-
         try {
-            // Подготавливаем запрос
             int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
-            if (rc != SQLITE_OK) {
-                throw DatabaseException("Ошибка подготовки запроса: " +
-                    string(sqlite3_errmsg(db)));
-            }
+            if (rc != SQLITE_OK) throw DatabaseException(sqlite3_errmsg(db));
 
-            // Привязываем параметры
-            sqlite3_bind_text(stmt, 1, secret.user.c_str(), -1, SQLITE_TRANSIENT);
+            sqlite3_bind_text(stmt, 1, secret.owner_id.c_str(), -1, SQLITE_TRANSIENT);
             sqlite3_bind_text(stmt, 2, secret.secret.c_str(), -1, SQLITE_TRANSIENT);
-            sqlite3_bind_text(stmt, 3, secret.password.c_str(), -1, SQLITE_TRANSIENT);
+            sqlite3_bind_text(stmt, 3, secret.created_at.c_str(), -1, SQLITE_TRANSIENT);
+            sqlite3_bind_text(stmt, 4, secret.expires_at.c_str(), -1, SQLITE_TRANSIENT);
+            sqlite3_bind_text(stmt, 5, secret.secret_type.c_str(), -1, SQLITE_TRANSIENT);
 
-            // Выполняем запрос
             rc = sqlite3_step(stmt);
-            if (rc != SQLITE_DONE) {
-                throw DatabaseException("Ошибка добавления секрета: " +
-                    string(sqlite3_errmsg(db)));
-            }
+            if (rc != SQLITE_DONE) throw DatabaseException(sqlite3_errmsg(db));
 
-            // Получаем ID добавленной записи
             int newId = static_cast<int>(sqlite3_last_insert_rowid(db));
-
             sqlite3_finalize(stmt);
-
-            cout << "Секрет добавлен, ID: " << newId << endl;
             return newId;
-
         }
         catch (...) {
             if (stmt) sqlite3_finalize(stmt);
             throw;
         }
     }
+
+
 
     // Получение секрета по ID
     Secret getSecretById(int secretId) {
-        string sql =
-            "SELECT id, user, secret, password "
+        string sql = "SELECT id, owner_id, secret, created_at, expires_at, secret_type "
             "FROM tbl_secret WHERE id = ?;";
-
         sqlite3_stmt* stmt = nullptr;
-        Secret secretObj;
-
+        Secret s;
         try {
             int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
-            if (rc != SQLITE_OK) {
-                throw DatabaseException("Ошибка подготовки запроса");
-            }
-
-            sqlite3_bind_int(stmt, 1, secretId);
-
+            if (rc != SQLITE_OK)
+                throw DatabaseException(sqlite3_errmsg(db)); sqlite3_bind_int(stmt, 1, secretId);
             if (sqlite3_step(stmt) == SQLITE_ROW) {
-                secretObj.id = sqlite3_column_int(stmt, 0);
-                secretObj.user = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-                secretObj.secret = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-                secretObj.password = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+                s.id = sqlite3_column_int(stmt, 0);
+                s.owner_id = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+                s.secret = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+                s.created_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+                s.expires_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+                s.secret_type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
             }
             else {
-                throw DatabaseException("Секрет с ID " + to_string(secretId) + " не найден");
+                throw DatabaseException("Секрет не найден");
             }
-
             sqlite3_finalize(stmt);
-            return secretObj;
-
+            return s;
         }
         catch (...) {
-            if (stmt) sqlite3_finalize(stmt);
+            if (stmt)  sqlite3_finalize(stmt);
             throw;
         }
     }
+    void dropTables() {
+        try {
+            executeSQL("DROP TABLE IF EXISTS tbl_secret;");
+            executeSQL("DROP TABLE IF EXISTS tbl_users;");
+            executeSQL("DROP INDEX IF EXISTS idx_created_at;"); 
+            executeSQL("DROP INDEX IF EXISTS idx_username;"); 
+            cout << "Индексы idx_created_at и idx_username удалены" << endl;
+            cout << "Таблицы tbl_secret и tbl_userd удалены" << endl;
+        }
+        catch (const DatabaseException& e) { cerr << "Ошибка удаления таблиц: " << e.what() << endl; }
+    }
+
 
     // Получение секрета по пользователю
-    Secret getSecretByUser(const string& username) {
+    /*Secret getSecretByUser(const string& username) {
         string sql =
             "SELECT id, user, secret, password "
             "FROM tbl_secret WHERE user = ?;";
@@ -209,36 +223,29 @@ public:
             if (stmt) sqlite3_finalize(stmt);
             throw;
         }
-    }
+    }*/
 
     // Получение всех секретов
     vector<Secret> getAllSecrets() {
-        string sql =
-            "SELECT id, user, secret, password "
-            "FROM tbl_secret ORDER BY user;";
-
+        string sql = "SELECT id, owner_id, secret, created_at, expires_at, secret_type FROM tbl_secret;";
         vector<Secret> secrets;
         sqlite3_stmt* stmt = nullptr;
-
         try {
             int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
-            if (rc != SQLITE_OK) {
-                throw DatabaseException("Ошибка подготовки запроса");
-            }
+            if (rc != SQLITE_OK) throw DatabaseException(sqlite3_errmsg(db));
 
             while (sqlite3_step(stmt) == SQLITE_ROW) {
-                Secret secretObj;
-                secretObj.id = sqlite3_column_int(stmt, 0);
-                secretObj.user = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-                secretObj.secret = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-                secretObj.password = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
-
-                secrets.push_back(secretObj);
+                Secret s;
+                s.id = sqlite3_column_int(stmt, 0);
+                s.owner_id = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+                s.secret = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+                s.created_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+                s.expires_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+                s.secret_type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+                secrets.push_back(s);
             }
-
             sqlite3_finalize(stmt);
             return secrets;
-
         }
         catch (...) {
             if (stmt) sqlite3_finalize(stmt);
@@ -246,10 +253,11 @@ public:
         }
     }
 
+
     // Обновление секрета
     bool updateSecret(int secretId, const Secret& updatedSecret) {
-        string sql =
-            "UPDATE tbl_secret SET user = ?, secret = ?, password = ? "
+        string sql = 
+            "UPDATE tbl_secret SET owner_id = ?, secret = ?, created_at = ?, expires_at = ?, secret_type = ? "
             "WHERE id = ?;";
 
         sqlite3_stmt* stmt = nullptr;
@@ -260,10 +268,12 @@ public:
                 throw DatabaseException("Ошибка подготовки запроса");
             }
 
-            sqlite3_bind_text(stmt, 1, updatedSecret.user.c_str(), -1, SQLITE_TRANSIENT);
-            sqlite3_bind_text(stmt, 2, updatedSecret.secret.c_str(), -1, SQLITE_TRANSIENT);
-            sqlite3_bind_text(stmt, 3, updatedSecret.password.c_str(), -1, SQLITE_TRANSIENT);
-            sqlite3_bind_int(stmt, 4, secretId);
+            sqlite3_bind_text(stmt, 1, updatedSecret.owner_id.c_str(), -1, SQLITE_TRANSIENT); 
+            sqlite3_bind_text(stmt, 2, updatedSecret.secret.c_str(), -1, SQLITE_TRANSIENT); 
+            sqlite3_bind_text(stmt, 3, updatedSecret.created_at.c_str(), -1, SQLITE_TRANSIENT); 
+            sqlite3_bind_text(stmt, 4, updatedSecret.expires_at.c_str(), -1, SQLITE_TRANSIENT); 
+            sqlite3_bind_text(stmt, 5, updatedSecret.secret_type.c_str(), -1, SQLITE_TRANSIENT); 
+            sqlite3_bind_int(stmt, 6, secretId);
 
             rc = sqlite3_step(stmt);
             bool success = (rc == SQLITE_DONE);
@@ -320,7 +330,7 @@ public:
     }
 
     // Удаление секрета по пользователю
-    bool deleteSecretByUser(const string& username) {
+   /*/ bool deleteSecretByUser(const string& username) {
         string sql = "DELETE FROM tbl_secret WHERE user = ?;";
 
         sqlite3_stmt* stmt = nullptr;
@@ -351,18 +361,19 @@ public:
             if (stmt) sqlite3_finalize(stmt);
             throw;
         }
-    }
+    }*/
 
     // Проверка существования пользователя
     bool userExists(const string& username) {
-        string sql = "SELECT COUNT(*) FROM tbl_secret WHERE user = ?;";
+        string sql = "SELECT COUNT(*) FROM tbl_users WHERE username = ?;";
 
         sqlite3_stmt* stmt = nullptr;
 
         try {
             int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
             if (rc != SQLITE_OK) {
-                throw DatabaseException("Ошибка подготовки запроса");
+                throw DatabaseException("Ошибка подготовки запроса: " +
+                    string(sqlite3_errmsg(db)));
             }
 
             sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_TRANSIENT);
@@ -374,13 +385,13 @@ public:
 
             sqlite3_finalize(stmt);
             return count > 0;
-
         }
         catch (...) {
             if (stmt) sqlite3_finalize(stmt);
             throw;
         }
     }
+
 
     // Проверка существования секрета
     bool secretExists(int secretId) {
@@ -414,7 +425,7 @@ public:
     // Аутентификация (проверка пользователя и пароля)
     bool authenticate(const string& username, const string& password) {
         string sql =
-            "SELECT COUNT(*) FROM tbl_secret WHERE user = ? AND password = ?;";
+            "SELECT COUNT(*) FROM tbl_users WHERE username = ? AND password = ?;";
 
         sqlite3_stmt* stmt = nullptr;
 
@@ -445,9 +456,9 @@ public:
     // Поиск секретов по шаблону
     vector<Secret> searchSecrets(const string& pattern) {
         string sql =
-            "SELECT id, user, secret, password "
-            "FROM tbl_secret WHERE user LIKE ? OR secret LIKE ? "
-            "ORDER BY user;";
+            "SELECT id, owner_id, secret, created_at, expires_at, secret_type "
+            "FROM tbl_secret WHERE owner_id LIKE ? OR secret LIKE ? OR secret_type LIKE ? "
+            "ORDER BY created_at;";
 
         vector<Secret> secrets;
         sqlite3_stmt* stmt = nullptr;
@@ -455,32 +466,36 @@ public:
         try {
             int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
             if (rc != SQLITE_OK) {
-                throw DatabaseException("Ошибка подготовки запроса");
+                throw DatabaseException("Ошибка подготовки запроса: " +
+                    string(sqlite3_errmsg(db)));
             }
 
             string searchPattern = "%" + pattern + "%";
             sqlite3_bind_text(stmt, 1, searchPattern.c_str(), -1, SQLITE_TRANSIENT);
             sqlite3_bind_text(stmt, 2, searchPattern.c_str(), -1, SQLITE_TRANSIENT);
+            sqlite3_bind_text(stmt, 3, searchPattern.c_str(), -1, SQLITE_TRANSIENT);
 
             while (sqlite3_step(stmt) == SQLITE_ROW) {
-                Secret secretObj;
-                secretObj.id = sqlite3_column_int(stmt, 0);
-                secretObj.user = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-                secretObj.secret = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-                secretObj.password = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+                Secret s;
+                s.id = sqlite3_column_int(stmt, 0);
+                s.owner_id = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+                s.secret = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+                s.created_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+                s.expires_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+                s.secret_type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
 
-                secrets.push_back(secretObj);
+                secrets.push_back(s);
             }
 
             sqlite3_finalize(stmt);
             return secrets;
-
         }
         catch (...) {
             if (stmt) sqlite3_finalize(stmt);
             throw;
         }
     }
+
 
     // Получение статистики
     struct Statistics {
@@ -500,21 +515,18 @@ public:
 
     Statistics getStatistics() {
         Statistics stats;
-
         string sql = "SELECT COUNT(*) FROM tbl_secret;";
         stats.totalSecrets = executeScalar<int>(sql);
-
-        sql = "SELECT COUNT(DISTINCT user) FROM tbl_secret;";
+        sql = "SELECT COUNT(DISTINCT owner_id) FROM tbl_secret;";
         stats.uniqueUsers = executeScalar<int>(sql);
-
-        sql = "SELECT user FROM tbl_secret ORDER BY id DESC LIMIT 1;";
+        sql = "SELECT owner_id FROM tbl_secret ORDER BY created_at DESC LIMIT 1;";
         stats.newestUser = executeScalar<string>(sql);
-
-        sql = "SELECT user FROM tbl_secret ORDER BY id ASC LIMIT 1;";
+        sql = "SELECT owner_id FROM tbl_secret ORDER BY created_at ASC LIMIT 1;";
         stats.oldestUser = executeScalar<string>(sql);
 
         return stats;
     }
+
 
     // Получение версии SQLite
     static string getSQLiteVersion() {
@@ -549,7 +561,33 @@ public:
             throw;
         }
     }
+    bool clearAllUsers() {
+        string sql = "DELETE FROM tbl_users;";
 
+        sqlite3_stmt* stmt = nullptr;
+
+        try {
+            int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+            if (rc != SQLITE_OK) {
+                throw DatabaseException("Ошибка подготовки запроса");
+            }
+
+            rc = sqlite3_step(stmt);
+            bool success = (rc == SQLITE_DONE);
+
+            if (success) {
+                cout << "Все пользователи удалены" << endl;
+            }
+
+            sqlite3_finalize(stmt);
+            return success;
+
+        }
+        catch (...) {
+            if (stmt) sqlite3_finalize(stmt);
+            throw;
+        }
+    }
 private:
     // Вспомогательные методы
 
