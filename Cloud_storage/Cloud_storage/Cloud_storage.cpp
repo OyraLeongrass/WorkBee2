@@ -1,63 +1,94 @@
 ﻿#include <iostream>
 #include "DataBase.h"
-#include <Windows.h>
+#include "httplib.h"
+#include "json.hpp"
+using json = nlohmann::json;
 using namespace std;
 
-void demonstrateDatabase() {
-      try {
-        DataBase& db = DataBase::getInstance();
-        cout << "1. Открытие базы данных" << endl;
-        db.open("secrets.db");
 
-        cout << "Версия SQLite: " << DataBase::getSQLiteVersion() << endl;
-        cout << "\n2. Добавление секретов" << endl;
+
+int main() {
+    cout << "Тестирование базы данных секретов\n" << endl;
+    try {
+        DataBase& db = DataBase::getInstance();
+        db.open("secrets.db");
+        httplib::Server svr;
+
+        // Добавляем тестовые данные
         Secret secret1("1", "cloud_key", "2026-01-08", "2026-02-01", "personal");
         Secret secret2("2", "light_token", "2026-01-08", "2026-03-01", "work");
         Secret secret3("3", "star_pass", "2026-01-08", "2026-04-01", "system");
         Secret secret4("4", "shadow_code", "2026-01-08", "2026-05-01", "test");
         Secret secret5("5", "spirit_lock", "2026-01-08", "2026-06-01", "archive");
 
-        int id1 = db.addSecret(secret1);
-        int id2 = db.addSecret(secret2);
-        int id3 = db.addSecret(secret3);
-        int id4 = db.addSecret(secret4);
-        int id5 = db.addSecret(secret5);
+        db.addSecret(secret1);
+        db.addSecret(secret2);
+        db.addSecret(secret3);
+        db.addSecret(secret4);
+        db.addSecret(secret5);
 
-        cout << "\n3. Список всех секретов" << endl;
-        for (const auto& s : db.getAllSecrets()) s.print();
+        // Эндпоинт: список всех секретов
+        svr.Get("/secrets", [&](const httplib::Request&, httplib::Response& res) {
+            auto secrets = db.getAllSecrets();
+            json j;
+            for (const auto& s : secrets) {
+                j.push_back({
+                    {"id", s.id},
+                    {"owner_id", s.owner_id},
+                    {"secret", s.secret},
+                    {"created_at", s.created_at},
+                    {"expires_at", s.expires_at},
+                    {"secret_type", s.secret_type}
+                    });
+            }
+            res.set_content(j.dump(4), "application/json");
+            });
 
-        cout << "\n4. Получение секрета по ID" << endl;
-        db.getSecretById(id1).print();
+        // Эндпоинт: получить секрет по ID
+        svr.Get(R"(/secret/(\d+))", [&](const httplib::Request& req, httplib::Response& res) {
+            int id = stoi(req.matches[1]);
+            try {
+                Secret s = db.getSecretById(id);
+                json j = {
+                    {"id", s.id},
+                    {"owner_id", s.owner_id},
+                    {"secret", s.secret},
+                    {"created_at", s.created_at},
+                    {"expires_at", s.expires_at},
+                    {"secret_type", s.secret_type}
+                };
+                res.set_content(j.dump(4), "application/json");
+            }
+            catch (const DatabaseException& e) {
+                res.status = 404;
+                res.set_content(string("Ошибка: ") + e.what(), "text/plain");
+            }
+            });
 
-        cout << "\n5. Обновление секрета" << endl;
-        Secret updated("1", "new_cloud_key", "2026-01-09", "2026-02-15", "personal");
-        db.updateSecret(id1, updated);
-        db.getSecretById(id1).print();
+        // Эндпоинт: добавить секрет (POST)
+        svr.Post("/secret", [&](const httplib::Request& req, httplib::Response& res) {
+            try {
+                auto j = json::parse(req.body);
+                Secret s(
+                    j["owner_id"].get<string>(),
+                    j["secret"].get<string>(),
+                    j["created_at"].get<string>(),
+                    j["expires_at"].get<string>(),
+                    j["secret_type"].get<string>()
+                );
+                int newId = db.addSecret(s);
+                res.set_content("Секрет добавлен, ID: " + to_string(newId), "text/plain");
+            }
+            catch (const exception& e) {
+                res.status = 400;
+                res.set_content(string("Ошибка добавления: ") + e.what(), "text/plain");
+            }
+            });
 
-        cout << "\n6. Поиск секретов по шаблону 'key'" << endl;
-        for (const auto& s : db.searchSecrets("key")) s.print();
+        cout << "Сервер запущен на http://localhost:8080\n";
+        svr.listen("0.0.0.0", 8080);
 
-        cout << "\n7. Проверка существования пользователя с owner_id = '3'" << endl;
-        cout << (db.userExists("3") ? "ДА" : "НЕТ") << endl;
-
-        cout << "\n8. Проверка существования секрета ID " << id2 << endl;
-        cout << (db.secretExists(id2) ? "ДА" : "НЕТ") << endl;
-
-        cout << "\n9. Статистика" << endl;
-        db.getStatistics().print();
-
-        cout << "\n10. Удаление секрета по ID (star_pass)" << endl;
-        db.deleteSecret(id3);
-
-        cout << "\n11. Список после удаления" << endl;
-        for (const auto& s : db.getAllSecrets()) s.print();
-
-        cout << "\n12. Очистка всей таблицы" << endl;
         db.clearAllSecrets();
-        cout << "\nСписок после удаления" << endl;
-        for (const auto& s : db.getAllSecrets()) s.print();
-
-        cout << "\n13. Закрытие базы данных" << endl;
         db.close();
     }
     catch (const DatabaseException& e) {
@@ -66,13 +97,6 @@ void demonstrateDatabase() {
     catch (const exception& e) {
         cerr << "Общая ошибка: " << e.what() << endl;
     }
-}
-
-
-int main() {
-    cout << "Тестирование базы данных секретов\n" << endl;
-    demonstrateDatabase();
-    cout << "\nНажмите Enter для выхода...";
     cin.get();
     return 0;
 }

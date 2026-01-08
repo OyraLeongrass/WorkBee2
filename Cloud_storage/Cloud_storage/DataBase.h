@@ -5,7 +5,6 @@
 #include <stdexcept>
 #include "sqlite3.h"
 #include <iostream>
-#include <Windows.h>
 using namespace std;
 
 struct Secret {
