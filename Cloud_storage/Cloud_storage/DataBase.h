@@ -624,6 +624,33 @@ public:
             throw;
         }
     }
+    // Получение всех записей журнала аудита
+    vector<AuditLog> getAuditLogs() {
+        string sql =
+            "SELECT id_audit_logs, user_id, action, object_type, object_id, created_at "
+            "FROM audit_logs ORDER BY created_at DESC;";
+
+        vector<AuditLog> logs;
+        sqlite3_stmt* stmt = nullptr;
+
+        int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+        if (rc != SQLITE_OK)
+            throw DatabaseException(sqlite3_errmsg(db));
+
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            AuditLog log;
+            log.id_audit_logs = sqlite3_column_int(stmt, 0);
+            log.user_id = sqlite3_column_int(stmt, 1);
+            log.action = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+            log.object_type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+            log.object_id = sqlite3_column_int(stmt, 4);
+            log.created_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+            logs.push_back(log);
+        }
+
+        sqlite3_finalize(stmt);
+        return logs;
+    }
 
 private:
     // Вспомогательные методы

@@ -15,26 +15,13 @@ using System.Windows.Shapes;
 namespace SecretsClient
 {
     /// <summary>
-    /// Логика взаимодействия для SecretsWindow.xaml
+    /// Логика взаимодействия для SecretEditWindow.xaml
     /// </summary>
-    public partial class SecretsWindow : Window
+    public partial class SecretEditWindow : Window
     {
-        ApiService api = new ApiService();
-
-        public SecretsWindow()
+        public SecretEditWindow()
         {
             InitializeComponent();
-            LoadSecrets();
-        }
-
-        private async void LoadSecrets()
-        {
-            SecretsGrid.ItemsSource = await api.GetSecrets();
-        }
-
-        private void Refresh_Click(object sender, RoutedEventArgs e)
-        {
-            LoadSecrets();
         }
     }
 }

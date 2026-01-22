@@ -1,0 +1,94 @@
+﻿<Window x:Class="SecretsClient.AdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Панель администратора"
+        Height="600"
+        Width="900"
+        WindowStartupLocation="CenterScreen">
+
+    <TabControl>
+
+        <!-- Пользователи -->
+        <TabItem Header="Пользователи">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Добавить"
+                            Click="AddUser_Click"/>
+                    <Button Content="Редактировать"
+                            Margin="10,0,0,0"
+                            Click="EditUser_Click"/>
+                    <Button Content="Удалить"
+                            Margin="10,0,0,0"
+                            Click="DeleteUser_Click"/>
+                </StackPanel>
+
+                <DataGrid x:Name="UsersGrid"
+                          Grid.Row="1"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding id_user}" Width="50"/>
+                        <DataGridTextColumn Header="Логин" Binding="{Binding username}" Width="150"/>
+                        <DataGridTextColumn Header="Роль" Binding="{Binding role}" Width="100"/>
+                        <DataGridCheckBoxColumn Header="Активен" Binding="{Binding is_active}" Width="80"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </TabItem>
+
+        <!-- Секреты -->
+        <TabItem Header="Секреты">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Добавить"
+                            Margin="0,0,10,0"
+                            Click="AddSecret_Click"/>
+                    <Button Content="Редактировать"
+                            Click="EditSecret_Click"/>
+                    <Button Content="Удалить"
+                            Margin="10,0,0,0"
+                            Click="DeleteSecret_Click"/>
+                </StackPanel>
+
+                <DataGrid x:Name="SecretsGrid"
+                          Grid.Row="1"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding id_secrets}" Width="50"/>
+                        <DataGridTextColumn Header="Владелец" Binding="{Binding owner_id}" Width="80"/>
+                        <DataGridTextColumn Header="Тип" Binding="{Binding secret_type}" Width="100"/>
+                        <DataGridTextColumn Header="Значение" Binding="{Binding secret_value}" Width="*"/>
+                        <DataGridTextColumn Header="Истекает" Binding="{Binding expires_at}" Width="150"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </TabItem>
+
+        <!-- Аудит -->
+        <TabItem Header="Журнал аудита">
+            <Frame Source="AuditLogWindow.xaml"/>
+        </TabItem>
+
+        <!-- Статистика -->
+        <TabItem Header="Статистика">
+            <StackPanel Margin="20">
+                <TextBlock x:Name="TotalActions"/>
+                <TextBlock x:Name="UniqueUsers"/>
+                <TextBlock x:Name="FirstUser"/>
+                <TextBlock x:Name="LastUser"/>
+            </StackPanel>
+        </TabItem>
+
+    </TabControl>
+</Window>

@@ -163,7 +163,7 @@ int main() {
 
         /* ===== START ===== */
 
-        cout << "✅ Сервер запущен: http://localhost:8080\n";
+        cout << "Сервер запущен: http://localhost:8080\n";
         svr.listen("0.0.0.0", 8080);
         db.close();
     }
