@@ -16,7 +16,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Margin="10">
                     <Button Content="Добавить"
                             Click="AddUser_Click"/>
                     <Button Content="Редактировать"
@@ -49,7 +49,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Margin="10">
                     <Button Content="Добавить"
                             Margin="0,0,10,0"
                             Click="AddSecret_Click"/>

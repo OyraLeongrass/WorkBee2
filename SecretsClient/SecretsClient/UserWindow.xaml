@@ -17,7 +17,8 @@
             <TextBox x:Name="SearchBox"
                      Width="200"
                      Height="25"
-                     Margin="0,0,10,0"/>
+                     Margin="0,0,10,0"
+                     />
 
             <Button Content="Найти"
                     Width="80"
@@ -46,7 +47,7 @@
                 <DataGridTextColumn Header="Тип" Binding="{Binding secret_type}" Width="100"/>
                 <DataGridTextColumn Header="Значение" Binding="{Binding secret_value}" Width="*"/>
                 <DataGridTextColumn Header="Создан" Binding="{Binding created_at}" Width="150"/>
-                <DataGridTextColumn Header="Истекает" Binding="{Binding expires_at}" Width="150"/>
+                <DataGridTextColumn Header="Истекает через" Binding="{Binding expires_at}" Width="150"/>
             </DataGrid.Columns>
         </DataGrid>
 
